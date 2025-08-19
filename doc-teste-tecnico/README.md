@@ -22,7 +22,7 @@ Criar uma **API REST** em **Node.js** para gerenciar **projetos e tarefas**, inc
 - `PUT /tasks/:id` → Atualiza status/título/descrição.
 - `DELETE /tasks/:id` → Remove tarefa.
   
----
+--- 
 
 ## 📦 Requisitos Técnicos
 - **Node.js + Express**
