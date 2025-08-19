@@ -42,6 +42,20 @@ Realizei o segundo commit após finalizar a base do segundo sistema, CRUD de Tar
 **Status:** ✅ Concluído e funcionando corretamente
 
 ---
+---
+
+### Terceiro Commit - (19/08/2025)
+**Criação dos Controllers**
+
+Realizei o terceiro commit após finalizar a configuração e criação dos controllers, responsável pelo o que cada rota irá fazer dentro dela. Todas as alterações foram implementadas e testadas com sucesso no Insomnia:
+
+#### Controllers Criados:
+- **`./controllers/ProjectsControllers.js`** → Arquivo que contem uma classe reponsável por todas rotas de projects, com seus devidos métodos.
+- **`./controllers/TasksControllers.js`** → Arquivo que contem uma classe reponsável por todas tasks, com seus devidos métodos.
+
+**Status:** ✅ Concluído e funcionando corretamente
+
+---
 
 ## Observações
 

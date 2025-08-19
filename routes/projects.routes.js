@@ -1,35 +1,16 @@
 const { Router } = require("express");
 const projectRouter = Router();
 
-projectRouter.post("/", (req, res) => {
-  const { nome, descricao } = req.body;
-  res.json({ nome, descricao });
-});
+const ProjectsControllers = require("../controllers/ProjectsControllers.js");
+const projectsControllers = new ProjectsControllers();
 
-projectRouter.get("/", (req, res) => {
-  res.json({ message: "seus dados do projeto" });
-});
-
-projectRouter.get("/:id", (req, res) => {
-  const { id } = req.params;
-  res.json({ message: `Dados individual do projeto ${id}` });
-});
-
-projectRouter.put("/:id", (req, res) => {
-  const { id } = req.params;
-  res.json({ message: `Atualização dos dados individual do projeto ${id}` });
-});
-
-projectRouter.delete("/:id", (req, res) => {
-  const { id } = req.params;
-  res.json({ message: `Deletando dados do projeto ${id}` });
-});
+projectRouter.post("/", projectsControllers.createProject);
+projectRouter.get("/", projectsControllers.getProjects);
+projectRouter.get("/:id", projectsControllers.getProject);
+projectRouter.put("/:id", projectsControllers.putProject);
+projectRouter.delete("/:id", projectsControllers.delProject);
 
 // Rota vinculada à uma task específica
-projectRouter.post("/:projectId/tasks", (req, res) => {
-  const { status, titulo, descricao } = req.body;
-  res.json({ status, titulo, descricao });
-});
-
+projectRouter.post("/:projectId/tasks", projectsControllers.projectIDTaks);
 
 module.exports = projectRouter;

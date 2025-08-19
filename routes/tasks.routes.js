@@ -1,14 +1,10 @@
 const { Router } = require("express");
 const taskRouter = Router();
 
-taskRouter.put("/:id", (req, res) => {
-  const {id} = req.params
-  res.json({ message: `Atualizando status/título/descrição ${id}.` });
-});
+const TasksControllers = require("../controllers/TasksControllers.js");
+const tasksControllers = new TasksControllers();
 
-taskRouter.delete("/:id", (req, res) => {
-  const {id} = req.params
-  res.json({ message: `Removendo tarefa ${id}.` });
-});
+taskRouter.put("/:id", tasksControllers.putTasks);
+taskRouter.delete("/:id", tasksControllers.delTaks);
 
 module.exports = taskRouter;
