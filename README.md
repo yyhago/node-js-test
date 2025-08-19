@@ -24,6 +24,24 @@ Realizei o primeiro commit após finalizar a base do primeiro sistema, CRUD de P
 **Status:** ✅ Concluído e funcionando corretamente
 
 ---
+---
+
+### Segundo Commit - (19/08/2025)
+**Implementação do segundo CRUD de Tarefas**
+
+Realizei o segundo commit após finalizar a base do segundo sistema, CRUD de Tarefas. Todas as rotas foram implementadas e testadas com sucesso no Insomnia:
+
+#### Rotas Implementadas:
+- **`POST /:projectId/tasks`** → Rota que retorna uma task específica daquele devido projeto
+- **`PUT /tasks/:id`** → Retorna a task específica de acordo com seu id
+- **`DELETE /tasks/:id`** → Deleta a task específica de acordo com seu id
+
+#### Estrutura arquivos:
+- **`./routes/tasks.routes.js`** → Arquivo responsável pelas rotas de atualizar e deletar tasks, passando seus devidos parâmetros.
+
+**Status:** ✅ Concluído e funcionando corretamente
+
+---
 
 ## Observações
 

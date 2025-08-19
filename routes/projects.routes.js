@@ -1,7 +1,6 @@
 const { Router } = require("express");
 const projectRouter = Router();
 
-
 projectRouter.post("/", (req, res) => {
   const { nome, descricao } = req.body;
   res.json({ nome, descricao });
@@ -24,6 +23,12 @@ projectRouter.put("/:id", (req, res) => {
 projectRouter.delete("/:id", (req, res) => {
   const { id } = req.params;
   res.json({ message: `Deletando dados do projeto ${id}` });
+});
+
+// Rota vinculada à uma task específica
+projectRouter.post("/:projectId/tasks", (req, res) => {
+  const { status, titulo, descricao } = req.body;
+  res.json({ status, titulo, descricao });
 });
 
 
