@@ -69,7 +69,22 @@ Realizei o quarto commit após finalizar a pré configuração do database, resp
 **Status:** ✅ Concluído e funcionando corretamente
 
 ---
+---
+
+### Quinto Commit - (19/08/2025)
+**Criação do schema (models) das minhas tabelas do banco de dados, utilizando sequelize ORM**
+
+Realizei o quinto commit após finalizar a criação dos meus models, responsável campos das minhas tabelas, task e project. Todas as alterações foram implementadas e testadas com sucesso no Insomnia:
+
+#### Arquivos Criado:
+- **`./models/projectsModel.js`** → Model responsável pela tabela "Project", onde é criado seus campos: id, nome, descricao
+- **`./models/tasksModel.js`** → Model responsável pela tabela "Task", onde é criado seus campos: id, titulo, descricao, status e a foreign key: projectId, pegando o id do projeto
+- **`./models/index.js`** → Junção das duas models para exportação, e fazendo a relação das chaves estrangeiras
+
+**Status:** ✅ Concluído e funcionando corretamente
+
+---
 
 ## Observações
 
-Tecnologias usadas: Javascript, Node.js (express, nodemon, dotenv, mysql2, sequelize), Insomnia,  Prettier.
+Tecnologias usadas: Javascript, Node.js ( express, nodemon, dotenv, mysql2, sequelize(orm) ), MySQL, Insomnia,  Prettier.

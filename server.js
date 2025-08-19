@@ -10,6 +10,8 @@ app.use(routes);
 
 sequelize.sync().then(() => {
     console.log(`Database is running: ${process.env.DB_NAME}`);
+}).catch((error) => {
+    console.log(`Error database: ${error}`)
 })
 
 const PORT = 5000;
