@@ -56,7 +56,20 @@ Realizei o terceiro commit após finalizar a configuração e criação dos cont
 **Status:** ✅ Concluído e funcionando corretamente
 
 ---
+---
+
+### Quarto Commit - (19/08/2025)
+**Criação da pré configuração do database**
+
+Realizei o quarto commit após finalizar a pré configuração do database, responsável pelo armazenamento dos dados. Todas as alterações foram implementadas e testadas com sucesso no Insomnia:
+
+#### Database Criado:
+- **`./database/database.js`** → Arquivo responsável por armazenar no banco de dados mysql
+
+**Status:** ✅ Concluído e funcionando corretamente
+
+---
 
 ## Observações
 
-Tecnologias usadas: Javascript, Node.js (express, nodemon), Insomnia,  Prettier.
+Tecnologias usadas: Javascript, Node.js (express, nodemon, dotenv, mysql2, sequelize), Insomnia,  Prettier.
