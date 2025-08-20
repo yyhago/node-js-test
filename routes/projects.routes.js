@@ -16,4 +16,7 @@ projectRouter.delete("/:id", projectsControllers.delProject);
 // Rota vinculada à uma task específica
 projectRouter.post("/:projectId/tasks", tasksControllers.createTask);
 
+projectRouter.get("/:id/github/:username", projectsControllers.getGithubRepos);
+
+
 module.exports = projectRouter;
