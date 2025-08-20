@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
 
-const routes = require("./routes");
-const sequelize = require("./database/database.js");
+const routes = require("./src/routes");
+const sequelize = require("./src/database/database.js");
 
 app.use(express.json());
 app.use(routes);
