@@ -1,6 +1,6 @@
 # API de Gerenciamento de Projetos e Tarefas
 
-Uma API REST desenvolvida em Node.js com Express, Sequelize e MySQL para gerenciar projetos e suas tarefas associadas. A API oferece operações CRUD completas (criação, leitura, atualização e exclusão) tanto para projetos quanto para tarefas.
+Uma API REST desenvolvida em Node.js com Express, Sequelize e MySQL para gerenciar projetos e suas tarefas associadas. A API oferece operações CRUD completas (criação, leitura, atualização e exclusão) tanto para projetos quanto para tarefas, além de integração com a API do GitHub para buscar repositórios públicos de usuários.
 
 ![Screan01](./assets/imagePostman.png)
 ![Screan02](./assets/imageMySQL.png)
@@ -10,11 +10,19 @@ Uma API REST desenvolvida em Node.js com Express, Sequelize e MySQL para gerenci
 Esta API permite:
 - Gerenciar projetos com CRUD completo
 - Gerenciar tarefas vinculadas aos projetos
+- Buscar os 5 últimos repositórios públicos de um usuário no GitHub
 - Relacionamento entre projetos e tarefas (um projeto pode ter várias tarefas)
-- Arquitetura em camadas com controllers organizados
+- Arquitetura em camadas bem estruturada (Controllers, Services, Repositories)
 - Integração com banco de dados MySQL através do Sequelize ORM
 
-> **Nota:** Este projeto é um Desafio Técnico — Node.js
+## 🏗️ Arquitetura
+
+O projeto segue uma arquitetura em camadas para melhor organização e manutenibilidade:
+
+- **Controllers**: Responsáveis por receber as requisições HTTP e retornar respostas
+- **Services**: Contêm a lógica de negócio da aplicação
+- **Repositories**: Gerenciam o acesso aos dados e operações com o banco
+- **Models**: Definem a estrutura das tabelas e relacionamentos do banco de dados
 
 ## 📋 Pré-requisitos
 
@@ -31,27 +39,33 @@ Antes de rodar o projeto, você precisa ter instalado:
    git clone https://github.com/yyhago/node-js-test.git
    ```
 
-2. **Instale as dependências:**
+2. **Navegue até o diretório:**
+   ```bash
+   cd node-js-test
+   ```
+
+3. **Instale as dependências:**
    ```bash
    npm install
    ```
 
-3. **Configure as variáveis de ambiente:**
-   - Configure as variáveis conforme mostrado abaixo no arquivo .env
+4. **Configure as variáveis de ambiente:**
+   - Configure as variáveis conforme mostrado abaixo, porem mude para suas credências do banco.
+   - obs: O .env está apenas sendo enviado publicamente pois o recrutador tech pediu.
 
 ## 🌐 Variáveis de Ambiente
 
-Na raiz temos`.env` com as seguintes variáveis, porém configure com seu user e password:
+Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 
 ```env
 DB_NAME=nodejstestyyhago
-DB_USER=root
-DB_PASSWORD=root
+DB_USER=seuuser
+DB_PASSWORD=suasenha
 DB_HOST=localhost
-DB_PORT=3305
+DB_PORT=suaporta
 ```
 
-Essas variáveis são essenciais para a conexão com o banco de dados MySQL.
+- As variáveis de banco são essenciais para a conexão com o MySQL
 
 ## ▶️ Como Executar a API
 
@@ -62,7 +76,7 @@ Essas variáveis são essenciais para a conexão com o banco de dados MySQL.
 
 2. **Inicie a aplicação:**
    ```bash
-   nodemon ./server.js
+   npm start
    ```
 
 3. **Acesse a API:**
@@ -105,6 +119,31 @@ Essas variáveis são essenciais para a conexão com o banco de dados MySQL.
 }
 ```
 
+### 🐙 **Integração GitHub**
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `GET` | `/projects/:id/github/:username` | Buscar os 5 últimos repositórios públicos de um usuário |
+
+**Exemplo de resposta:**
+```json
+{
+  "project": {
+    "id": 1,
+    "nome": "Projeto Teste"
+  },
+  "repositories": [
+    {
+      "name": "repo-exemplo",
+      "description": "Descrição do repositório",
+      "html_url": "https://github.com/usuario/repo-exemplo",
+      "language": "JavaScript",
+      "created_at": "2025-08-19T10:00:00Z"
+    }
+  ]
+}
+```
+
 ### 📝 **Campos Obrigatórios e Validações**
 
 - **Projetos:** `nome` (obrigatório)
@@ -136,35 +175,60 @@ A API segue padrões REST com códigos de status HTTP apropriados:
 ## 🧪 Testando a API
 
 ### Usando cURL:
+
+**Criar um projeto:**
 ```bash
 curl -X POST http://localhost:5000/projects \
   -H "Content-Type: application/json" \
   -d '{"nome": "Projeto Teste", "descricao": "Descrição do projeto"}'
 ```
 
+**Buscar repositórios do GitHub:**
+```bash
+curl -X GET http://localhost:5000/projects/1/github/octocat
+```
+
 ### Usando Postman:
 1. Configure a URL base: `http://localhost:5000`
 2. Teste os endpoints conforme documentado acima
+3. Para a integração GitHub, use um username válido do GitHub
+
 
 ## 📁 Estrutura do Projeto
 
 ```
-├── controllers/           # Controllers da aplicação
-│   ├── ProjectsControllers.js
-│   └── TasksControllers.js
-├── models/               # Modelos Sequelize
-│   ├── index.js
-│   ├── projectsModel.js
-│   └── tasksModel.js
-├── routes/               # Configuração das rotas
-│   ├── index.js
-│   ├── projects.routes.js
-│   └── tasks.routes.js
-├── database/             # Configuração do banco
-│   └── database.js
-├── .env                  # Variáveis de ambiente
-├── server.js             # Arquivo principal
-└── package.json          # Dependências do projeto
+├── assets/                    # Recursos do projeto
+│   ├── imageMySQL.png
+│   ├── imagePostman.png
+│   └── doc-teste-tecnico/
+│       └── README.md
+├── src/                       # Código fonte
+│   ├── controllers/           # Controllers da aplicação
+│   │   ├── ProjectsControllers.js
+│   │   └── TasksControllers.js
+│   ├── services/              # Lógica de negócio
+│   │   ├── ProjectServices.js
+│   │   └── TaskService.js
+│   ├── repositories/          # Acesso aos dados
+│   │   ├── ProjectRepository.js
+│   │   ├── RepositoryRepository.js
+│   │   └── TaskRepository.js
+│   ├── models/               # Modelos Sequelize
+│   │   ├── index.js
+│   │   ├── projectsModel.js
+│   │   ├── repositoriesGithub.js
+│   │   └── tasksModel.js
+│   ├── routes/               # Configuração das rotas
+│   │   ├── index.js
+│   │   ├── projects.routes.js
+│   │   └── tasks.routes.js
+│   └── database/             # Configuração do banco
+│       └── database.js
+├── .env                      # Variáveis de ambiente
+├── .gitignore               # Arquivos ignorados pelo Git
+├── README.md                # Documentação do projeto
+├── package.json             # Dependências do projeto
+└── server.js                # Arquivo principal
 ```
 
 ## 🛠️ Tecnologias Utilizadas
@@ -173,6 +237,7 @@ curl -X POST http://localhost:5000/projects \
 - **Express** - Framework web
 - **Sequelize** - ORM para banco de dados
 - **MySQL** - Sistema de gerenciamento de banco de dados
+- **Axios** - Cliente HTTP para integração com APIs externas
 - **dotenv** - Gerenciamento de variáveis de ambiente
 - **Nodemon** - Desenvolvimento com hot reload
 
@@ -185,6 +250,6 @@ Este projeto foi desenvolvido seguindo uma abordagem incremental:
 3. **Refatoração para Controllers** - Organização do código em camadas
 4. **Configuração do Banco** - Setup da conexão com MySQL
 5. **Models Sequelize** - Criação dos esquemas e relacionamentos
-
----
+6. **Arquitetura em Camadas** - Implementação de Services e Repositories
+7. **Integração GitHub** - Adição da funcionalidade de buscar repositórios
 
