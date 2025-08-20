@@ -1,34 +1,15 @@
-const { Project, Task } = require("../models/index.js");
-
+const TaskService = require("../services/TaskService.js");
 
 class TasksControllers {
   async createTask(req, res) {
     try {
       const { projectId } = req.params;
       const { titulo, descricao, status } = req.body;
-
-      if (!titulo) {
-        return res.status(400).json({ msg: "O título da tarefa é obrigatório" });
-      }
-      if (status && !['Pendente', 'Em progresso', 'Concluida'].includes(status)) {
-        return res.status(400).json({ msg: "Status inválido" });
-      }
-
-      const project = await Project.findByPk(projectId);
-      if (!project) {
-        return res.status(404).json({ msg: "Projeto não encontrado" });
-      }
-
-      const task = await Task.create({
-        titulo,
-        descricao,
-        status: status || 'Pendente',
-        projectId,
-      });
-
+      const task = await TaskService.createTask({ projectId, titulo, descricao, status });
       return res.status(201).json(task);
     } catch (error) {
-      return res.status(500).json({ msg: `Erro ao criar tarefa, erro: ${error.message}` });
+      const status = error.message.includes("obrigatórios") ? 400 : error.message.includes("não encontrado") ? 404 : 500;
+      return res.status(status).json({ msg: `Erro ao criar tarefa: ${error.message}` });
     }
   }
 
@@ -36,38 +17,24 @@ class TasksControllers {
     try {
       const { id } = req.params;
       const { titulo, descricao, status } = req.body;
-
-      const task = await Task.findByPk(id);
-      if (!task) {
-        return res.status(404).json({ msg: "Tarefa não encontrada" });
-      }
-
-      if (status && !['Pendente', 'Em progresso', 'Concluida'].includes(status)) {
-        return res.status(400).json({ msg: "Status inválido" });
-      }
-
-      await task.update({ titulo, descricao, status });
+      const task = await TaskService.updateTask(id, { titulo, descricao, status });
       return res.status(200).json(task);
     } catch (error) {
-      return res.status(500).json({ msg: `Erro ao atualizar tarefa, erro: ${error.message}` });
+      const status = error.message.includes("não encontrado") ? 404 : error.message.includes("Título") || error.message.includes("Descrição") || error.message.includes("Status") ? 400 : 500;
+      return res.status(status).json({ msg: `Erro ao atualizar tarefa: ${error.message}` });
     }
   }
 
   async deleteTask(req, res) {
     try {
       const { id } = req.params;
-
-      const task = await Task.findByPk(id);
-      if (!task) {
-        return res.status(404).json({ msg: "Tarefa não encontrada" });
-      }
-
-      await task.destroy();
+      await TaskService.deleteTask(id);
       return res.status(204).send();
     } catch (error) {
-      return res.status(500).json({ msg: `Erro ao deletar tarefa, erro: ${error.message}` });
+      const status = error.message.includes("não encontrado") ? 404 : 500;
+      return res.status(status).json({ msg: `Erro ao deletar tarefa: ${error.message}` });
     }
   }
 }
 
-module.exports = TasksControllers;
+module.exports = new TasksControllers();
