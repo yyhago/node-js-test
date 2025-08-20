@@ -4,19 +4,17 @@ const projectRouter = Router();
 const ProjectsControllers = require("../controllers/ProjectsControllers.js");
 const TasksControllers = require("../controllers/TasksControllers.js");
 
-const projectsControllers = new ProjectsControllers();
-const tasksControllers = new TasksControllers();
 
-projectRouter.post("/", projectsControllers.createProject);
-projectRouter.get("/", projectsControllers.getProjects);
-projectRouter.get("/:id", projectsControllers.getProject);
-projectRouter.put("/:id", projectsControllers.putProject);
-projectRouter.delete("/:id", projectsControllers.delProject);
+projectRouter.post("/", ProjectsControllers.createProject);
+projectRouter.get("/", ProjectsControllers.getProjects);
+projectRouter.get("/:id", ProjectsControllers.getProject);
+projectRouter.put("/:id", ProjectsControllers.putProject);
+projectRouter.delete("/:id", ProjectsControllers.delProject);
 
 // Rota vinculada à uma task específica
-projectRouter.post("/:projectId/tasks", tasksControllers.createTask);
+projectRouter.post("/:projectId/tasks", TasksControllers.createTask);
 
-projectRouter.get("/:id/github/:username", projectsControllers.getGithubRepos);
+projectRouter.get("/:id/github/:username", ProjectsControllers.getGithubRepos);
 
 
 module.exports = projectRouter;

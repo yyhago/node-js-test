@@ -1,4 +1,4 @@
-const ProjectService = require("../services/ProjectService.js");
+const ProjectService = require("../services/ProjectServices");
 
 class ProjectsControllers {
   async createProject(req, res) {
