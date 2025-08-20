@@ -1,32 +1,76 @@
+const { Project, Task } = require("../models/index.js");
+
+
 class ProjectsControllers {
-  createProject(req, res) {
-    const { nome, descricao } = req.body;
-    res.json({ nome, descricao });
+
+  async createProject(req, res) {
+    try {
+      const { nome, descricao } = req.body;
+      if (!nome) {
+        return res.status(400).json({ msg: "O nome do projeto é obrigatório!" });
+      }
+
+      const project = await Project.create({ nome, descricao });
+      return res.status(201).json(project);
+    } catch (error) {
+      return req.status(500).json({ msg: `Erro do servidor ao criar um projeto, erro: ${error}` });
+    }
   }
 
-  getProjects(req, res) {
-    res.json({ message: "seus dados dos projetos" });
+  async getProjects(req, res) {
+    try {
+      const project = await Project.findAll({
+        include: [{ model: Task, as: "tasks" }],
+      });
+      return res.status(200).json(project);
+    } catch (error) {
+      return res.status(500).json({ msg: `Erro ao listar projetos, erro: ${error}` });
+    }
   }
 
-  getProject(req, res) {
-    const { id } = req.params;
-    res.json({ message: `Dados individual do projeto ${id}` });
+  async getProject(req, res) {
+    try {
+      const { id } = req.params;
+      const project = await Project.findByPk(id, {
+        include: [{ model: Task, as: "tasks" }],
+      });
+      return res.status(200).json(project);
+    } catch (error) {
+      return res.status(404).json({ msg: `Projeto não encontrado, erro: ${error}` });
+    }
   }
 
-  putProject(req, res) {
-    const { id } = req.params;
-    res.json({ message: `Atualização dos dados individual do projeto ${id}` });
+  async putProject(req, res) {
+    try {
+      const { id } = req.params;
+      const { nome, descricao } = req.body;
+      const project = await Project.findByPk(id);
+      if (!project) {
+        return res.status(404).json({ msg: "Projeto não encontrado" });
+      }
+      await project.update({ nome, descricao });
+      return res.status(200).json(project);
+    } catch (error) {
+      return res.status(500).json({ msg: `Erro ao atualizar projeto, erro: ${error.message}` });
+    }
   }
 
-  delProject(req, res) {
-    const { id } = req.params;
-    res.json({ message: `Deletando dados do projeto ${id}` });
+  async delProject(req, res) {
+    try {
+      const { id } = req.params;
+
+      const project = await Project.findByPk(id);
+      if (!project) {
+        return res.status(404).json({ msg: `Projeto não encontrado` });
+      }
+
+      await project.destroy();
+      return res.status(204).send();
+    } catch (error) {
+      return res.status(404).json({ msg: `Erro ao deletar projeto, erro: ${error}` });
+    }
   }
 
-  projectIDTaks(req, res) {
-    const { status, titulo, descricao } = req.body;
-    res.json({ status, titulo, descricao });
-  }
 }
 
 module.exports = ProjectsControllers;

@@ -1,90 +1,187 @@
-# Log de Desenvolvimento do Projeto
+# API de Gerenciamento de Projetos e Tarefas
 
-Este README.md serve como um diário de desenvolvimento do projeto, onde documento as etapas do projeto e o motivo de cada commit realizado até a conclusão.
+Uma API REST desenvolvida em Node.js com Express, Sequelize e MySQL para gerenciar projetos e suas tarefas associadas. A API oferece operações CRUD completas (criação, leitura, atualização e exclusão) tanto para projetos quanto para tarefas.
+
+## 🚀 Descrição do Projeto
+
+Esta API permite:
+- Gerenciar projetos com CRUD completo
+- Gerenciar tarefas vinculadas aos projetos
+- Relacionamento entre projetos e tarefas (um projeto pode ter várias tarefas)
+- Arquitetura em camadas com controllers organizados
+- Integração com banco de dados MySQL através do Sequelize ORM
+
+> **Nota:** Este projeto é um Desafio Técnico — Node.js
+
+## 📋 Pré-requisitos
+
+Antes de rodar o projeto, você precisa ter instalado:
+
+- **Node.js** (versão 18.x ou superior)
+- **MySQL** (versão 8.x ou superior)
+- **Postman** ou outra ferramenta para testar APIs (opcional)
+
+## 🔧 Instalação
+
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/yyhago/node-js-test.git
+   ```
+
+2. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
+
+3. **Configure as variáveis de ambiente:**
+   - Configure as variáveis conforme mostrado abaixo no arquivo .env
+
+## 🌐 Variáveis de Ambiente
+
+Na raiz temos`.env` com as seguintes variáveis, porém configure com seu user e password:
+
+```env
+DB_NAME=nodejstestyyhago
+DB_USER=root
+DB_PASSWORD=root
+DB_HOST=localhost
+DB_PORT=3305
+```
+
+Essas variáveis são essenciais para a conexão com o banco de dados MySQL.
+
+## ▶️ Como Executar a API
+
+1. **Crie o banco de dados no MySQL:**
+   ```sql
+   CREATE DATABASE nodejstestyyhago;
+   ```
+
+2. **Inicie a aplicação:**
+   ```bash
+   nodemon ./server.js
+   ```
+
+3. **Acesse a API:**
+   A API estará disponível em `http://localhost:5000`
+
+## 📚 Endpoints da API
+
+### 🗂️ **Projetos**
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `POST` | `/projects` | Criar um novo projeto |
+| `GET` | `/projects` | Listar todos os projetos com suas tarefas |
+| `GET` | `/projects/:id` | Obter detalhes de um projeto específico |
+| `PUT` | `/projects/:id` | Atualizar um projeto existente |
+| `DELETE` | `/projects/:id` | Deletar um projeto e suas tarefas |
+
+**Exemplo de body para criar projeto:**
+```json
+{
+  "nome": "Projeto Teste",
+  "descricao": "Descrição do projeto"
+}
+```
+
+### ✅ **Tarefas**
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `POST` | `/projects/:projectId/tasks` | Criar uma tarefa vinculada a um projeto |
+| `PUT` | `/tasks/:id` | Atualizar uma tarefa existente |
+| `DELETE` | `/tasks/:id` | Deletar uma tarefa |
+
+**Exemplo de body para criar tarefa:**
+```json
+{
+  "titulo": "Tarefa Teste",
+  "descricao": "Descrição da tarefa",
+  "status": "Pendente"
+}
+```
+
+### 📝 **Campos Obrigatórios e Validações**
+
+- **Projetos:** `nome` (obrigatório)
+- **Tarefas:** `titulo` (obrigatório)
+- **Status válidos para tarefas:** `Pendente`, `Em progresso`, `Concluida`
+
+## 📤 Respostas da API
+
+A API segue padrões REST com códigos de status HTTP apropriados:
+
+- `201` - Criação bem-sucedida
+- `200` - Leitura ou atualização bem-sucedida
+- `204` - Deleção bem-sucedida (sem corpo de resposta)
+- `400` - Erro de validação (campo obrigatório ausente ou status inválido)
+- `404` - Recurso não encontrado
+- `500` - Erro interno do servidor
+
+**Exemplo de resposta ao criar um projeto:**
+```json
+{
+  "id": 1,
+  "nome": "Projeto Teste",
+  "descricao": "Descrição do projeto",
+  "createdAt": "2025-08-19T20:58:00.000Z",
+  "updatedAt": "2025-08-19T20:58:00.000Z"
+}
+```
+
+## 🧪 Testando a API
+
+### Usando cURL:
+```bash
+curl -X POST http://localhost:5000/projects \
+  -H "Content-Type: application/json" \
+  -d '{"nome": "Projeto Teste", "descricao": "Descrição do projeto"}'
+```
+
+### Usando Postman:
+1. Configure a URL base: `http://localhost:5000`
+2. Teste os endpoints conforme documentado acima
+
+## 📁 Estrutura do Projeto
+
+```
+├── controllers/           # Controllers da aplicação
+│   ├── ProjectsControllers.js
+│   └── TasksControllers.js
+├── models/               # Modelos Sequelize
+│   ├── index.js
+│   ├── projectsModel.js
+│   └── tasksModel.js
+├── routes/               # Configuração das rotas
+│   ├── index.js
+│   ├── projects.routes.js
+│   └── tasks.routes.js
+├── database/             # Configuração do banco
+│   └── database.js
+├── .env                  # Variáveis de ambiente
+├── server.js             # Arquivo principal
+└── package.json          # Dependências do projeto
+```
+
+## 🛠️ Tecnologias Utilizadas
+
+- **Node.js** - Runtime JavaScript
+- **Express** - Framework web
+- **Sequelize** - ORM para banco de dados
+- **MySQL** - Sistema de gerenciamento de banco de dados
+- **dotenv** - Gerenciamento de variáveis de ambiente
+- **Nodemon** - Desenvolvimento com hot reload
+
+## 🔄 Histórico de Desenvolvimento
+
+Este projeto foi desenvolvido seguindo uma abordagem incremental:
+
+1. **CRUD de Projetos** - Implementação completa das operações básicas
+2. **CRUD de Tarefas** - Adição das funcionalidades de tarefas vinculadas
+3. **Refatoração para Controllers** - Organização do código em camadas
+4. **Configuração do Banco** - Setup da conexão com MySQL
+5. **Models Sequelize** - Criação dos esquemas e relacionamentos
 
 ---
 
-### Primeiro Commit - (19/08/2025)
-**Implementação do CRUD de Projetos**
-
-Realizei o primeiro commit após finalizar a base do primeiro sistema, CRUD de Projetos. Todas as rotas foram implementadas e testadas com sucesso no Insomnia:
-
-#### Rotas Implementadas:
-- **`POST /projects`** → Cria um novo projeto
-- **`GET /projects`** → Lista todos os projetos cadastrados
-- **`GET /projects/:id`** → Retorna dados específicos de um projeto
-- **`PUT /projects/:id`** → Atualiza informações de um projeto existente
-- **`DELETE /projects/:id`** → Remove um projeto do sistema
-
-#### Estrutura arquivos:
-- **`server.js`** → Arquivo responsável por configurar e inciar servidor.
-- **`./routes/projects.routes.js`** → Arquivo responsável pela criação das rotas.
-- **`./routes/index.js`** → Arquivo responsável apenas pela junção de todas as rotas, assim sendo chamado no server.js para melhor organização.
-
-**Status:** ✅ Concluído e funcionando corretamente
-
----
----
-
-### Segundo Commit - (19/08/2025)
-**Implementação do segundo CRUD de Tarefas**
-
-Realizei o segundo commit após finalizar a base do segundo sistema, CRUD de Tarefas. Todas as rotas foram implementadas e testadas com sucesso no Insomnia:
-
-#### Rotas Implementadas:
-- **`POST /:projectId/tasks`** → Rota que retorna uma task específica daquele devido projeto
-- **`PUT /tasks/:id`** → Retorna a task específica de acordo com seu id
-- **`DELETE /tasks/:id`** → Deleta a task específica de acordo com seu id
-
-#### Estrutura arquivos:
-- **`./routes/tasks.routes.js`** → Arquivo responsável pelas rotas de atualizar e deletar tasks, passando seus devidos parâmetros.
-
-**Status:** ✅ Concluído e funcionando corretamente
-
----
----
-
-### Terceiro Commit - (19/08/2025)
-**Criação dos Controllers**
-
-Realizei o terceiro commit após finalizar a configuração e criação dos controllers, responsável pelo o que cada rota irá fazer dentro dela. Todas as alterações foram implementadas e testadas com sucesso no Insomnia:
-
-#### Controllers Criados:
-- **`./controllers/ProjectsControllers.js`** → Arquivo que contem uma classe reponsável por todas rotas de projects, com seus devidos métodos.
-- **`./controllers/TasksControllers.js`** → Arquivo que contem uma classe reponsável por todas tasks, com seus devidos métodos.
-
-**Status:** ✅ Concluído e funcionando corretamente
-
----
----
-
-### Quarto Commit - (19/08/2025)
-**Criação da pré configuração do database**
-
-Realizei o quarto commit após finalizar a pré configuração do database, responsável pelo armazenamento dos dados. Todas as alterações foram implementadas e testadas com sucesso no Insomnia:
-
-#### Database Criado:
-- **`./database/database.js`** → Arquivo responsável por armazenar no banco de dados mysql
-
-**Status:** ✅ Concluído e funcionando corretamente
-
----
----
-
-### Quinto Commit - (19/08/2025)
-**Criação do schema (models) das minhas tabelas do banco de dados, utilizando sequelize ORM**
-
-Realizei o quinto commit após finalizar a criação dos meus models, responsável campos das minhas tabelas, task e project. Todas as alterações foram implementadas e testadas com sucesso no Insomnia:
-
-#### Arquivos Criado:
-- **`./models/projectsModel.js`** → Model responsável pela tabela "Project", onde é criado seus campos: id, nome, descricao
-- **`./models/tasksModel.js`** → Model responsável pela tabela "Task", onde é criado seus campos: id, titulo, descricao, status e a foreign key: projectId, pegando o id do projeto
-- **`./models/index.js`** → Junção das duas models para exportação, e fazendo a relação das chaves estrangeiras
-
-**Status:** ✅ Concluído e funcionando corretamente
-
----
-
-## Observações
-
-Tecnologias usadas: Javascript, Node.js ( express, nodemon, dotenv, mysql2, sequelize(orm) ), MySQL, Insomnia,  Prettier.

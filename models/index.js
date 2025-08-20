@@ -1,12 +1,12 @@
 const Project = require("./projectsModel");
 const Task = require("./tasksModel");
 
-Project.hasMany(Taks, {
+Project.hasMany(Task, {
   foreignKey: "projectId",
   as: "tasks",
 });
 
-Taks.belongsToMany(Project, {
+Task.belongsTo(Project, {
   foreignKey: "projectId",
   as: "project",
 });
