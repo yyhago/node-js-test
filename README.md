@@ -2,8 +2,9 @@
 
 Uma API REST desenvolvida em Node.js com Express, Sequelize e MySQL para gerenciar projetos e suas tarefas associadas. A API oferece operações CRUD completas (criação, leitura, atualização e exclusão) tanto para projetos quanto para tarefas, além de integração com a API do GitHub para buscar repositórios públicos de usuários.
 
-![Screan01](./assets/imagePostman.png)
-![Screan02](./assets/imageMySQL.png)
+![Screan01](./assets/imageArquitetura.png)
+![Screan02](./assets/imagePostman.png)
+![Screan03](./assets/imageMySQL.png)
 
 ## 🚀 Descrição do Projeto
 
